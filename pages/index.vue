@@ -8,12 +8,17 @@
     <div class="mt-10 flex gap-4 w-full pt-10">
       <v-btn variant="tonal" class="w-1/2">
         Validation
-        <validationDialog />
+        <validationDialog v-model="showValidationDialog" />
       </v-btn>
       <v-btn variant="tonal" class="w-1/2">
         Inference
-        <inferenceDialog />
+        <inferenceDialog v-model="showInferenceDialog" />
       </v-btn>
     </div>
   </div>
 </template>
+
+<script setup>
+const showValidationDialog = ref(false);
+const showInferenceDialog = ref(false);
+</script>
