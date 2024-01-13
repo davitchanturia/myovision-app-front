@@ -4,5 +4,16 @@
       <ImageUploader label="primary" />
       <ImageUploader label="secondary" />
     </div>
+
+    <div class="mt-10 flex gap-4 w-full pt-10">
+      <v-btn variant="tonal" class="w-1/2">
+        Validation
+        <validationDialog />
+      </v-btn>
+      <v-btn variant="tonal" class="w-1/2">
+        Inference
+        <inferenceDialog />
+      </v-btn>
+    </div>
   </div>
 </template>
