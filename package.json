@@ -11,9 +11,14 @@
   },
   "devDependencies": {
     "@invictus.codes/nuxt-vuetify": "^0.3.0",
+    "@nuxt/eslint-config": "^0.2.0",
+    "@nuxtjs/eslint-module": "^4.1.0",
     "@nuxtjs/tailwindcss": "^6.10.4",
     "autoprefixer": "^10.4.16",
+    "eslint": "^8.56.0",
     "nuxt": "^3.9.0",
+    "prettier": "3.1.1",
+    "tier": "5.10.0",
     "vue": "^3.4.6",
     "vue-router": "^4.2.5"
   },
