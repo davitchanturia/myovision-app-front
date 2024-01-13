@@ -19,6 +19,8 @@
 </template>
 
 <script setup>
+import { checkConnectionStatus } from "../services/connection.js";
+
 const showValidationDialog = ref(false);
 const showInferenceDialog = ref(false);
 </script>

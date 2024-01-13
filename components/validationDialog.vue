@@ -24,6 +24,4 @@ const props = defineProps(["modelValue"]);
 
 const emit = defineEmits(["update:modelValue"]);
 const showDialog = useVModel(props, "modelValue", emit);
-
-console.log(showDialog);
 </script>

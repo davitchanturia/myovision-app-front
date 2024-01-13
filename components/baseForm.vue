@@ -14,8 +14,6 @@
       <v-text-field label="Label" variant="outlined" />
     </div>
 
-    <v-divider color="red" />
-
     <div class="mt-8">
       <v-text-field label="Label" variant="outlined" />
     </div>
