@@ -6,18 +6,14 @@
     >
       <div class="w-full max-w-5xl mx-auto flex justify-end py-1">
         <div>
-          <v-icon
-            v-if="connectionStore.isConnected"
-            icon="mdi mdi-wifi"
-            class="text-white cursor-pointer"
-          />
-          <v-icon
-            v-else
-            icon="mdi-wifi-off"
-            class="text-white cursor-pointer"
-          />
+          <v-icon :icon="connectionIcon" class="text-white cursor-pointer" />
+
           <v-tooltip activator="parent" location="bottom">
-            Redis connection failed
+            {{
+              connectionStore.isConnected
+                ? "Redis connected"
+                : "Redis connection failed"
+            }}
           </v-tooltip>
         </div>
       </div>
@@ -34,5 +30,7 @@ import { useConnectionStore } from "../pinia/useConnectionStore.js";
 
 const connectionStore = useConnectionStore();
 
-console.log(connectionStore.isConnected);
+const connectionIcon = computed(() =>
+  connectionStore.isConnected ? "mdi mdi-wifi" : "mdi-wifi-off",
+);
 </script>
