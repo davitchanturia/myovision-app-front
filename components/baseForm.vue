@@ -15,7 +15,17 @@
     </div>
 
     <div class="mt-8">
-      <v-text-field label="Label" variant="outlined" />
+      <v-text-field
+        v-for="(config, i) in GeneralConfigObj"
+        :key="i"
+        v-model.number="config.value"
+        :label="replaceUnderscoresWithSpaces(config.label)"
+        :min="0"
+        step="any"
+        variant="outlined"
+        class="capitalize"
+        type="number"
+      />
     </div>
 
     <div class="flex justify-end gap-1">
@@ -36,19 +46,28 @@ const replaceUnderscoresWithSpaces = (key) => {
   return key.replaceAll("_", " ");
 };
 
-const updatedConfig = computed(() => {
+const baseConfigUpdater = (config_key) => {
   const x = [];
 
-  for (const [key, value] of Object.entries(configStore.amg_config_options)) {
-    console.log(key);
+  for (const [key, value] of Object.entries(config_key)) {
     x.push({ label: key, value: value });
   }
   return x;
-});
+};
 
-const AmgConfigObj = ref(updatedConfig.value);
+const updatedAmgConfig = computed(() =>
+  baseConfigUpdater(configStore.amg_config_options),
+);
+
+const updatedGeneralConfig = computed(() =>
+  baseConfigUpdater(configStore.general_config_options),
+);
+
+const AmgConfigObj = ref(updatedAmgConfig.value);
+const GeneralConfigObj = ref(updatedGeneralConfig.value);
 
 const submitHandler = () => {
   console.log(AmgConfigObj.value);
+  console.log(GeneralConfigObj.value);
 };
 </script>

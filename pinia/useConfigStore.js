@@ -5,10 +5,14 @@ export const useConfigStore = defineStore("config", {
   state: () => {
     return {
       amg_config: null,
+      general_config: null,
     };
   },
   getters: {
     amg_config_options() {
+      return this.amg_config;
+    },
+    general_config_options() {
       return this.amg_config;
     },
   },
@@ -18,6 +22,7 @@ export const useConfigStore = defineStore("config", {
 
       if (!error.value) {
         this.amg_config = data.value?.amg_config;
+        this.general_config = data.value?.general_config;
       }
     },
   },
