@@ -13,7 +13,7 @@ export const useConfigStore = defineStore("config", {
       return this.amg_config;
     },
     general_config_options() {
-      return this.amg_config;
+      return this.general_config;
     },
   },
   actions: {
