@@ -12,9 +12,18 @@
         step="any"
         class="capitalize"
       >
-        <v-tooltip activator="parent" location="start">
-          Tooltip Tooltip Tooltip Tooltip
-        </v-tooltip>
+        <template #append-inner>
+          <div>
+            <v-icon
+              icon="mdi-information-slab-circle-outline"
+              size="20px"
+              class="cursor-help"
+            />
+            <v-tooltip activator="parent" location="start">
+              Tooltip Tooltip Tooltip Tooltip
+            </v-tooltip>
+          </div>
+        </template>
       </v-text-field>
     </div>
 
@@ -29,7 +38,20 @@
         variant="outlined"
         class="capitalize"
         type="number"
-      />
+      >
+        <template #append-inner>
+          <div>
+            <v-icon
+              icon="mdi-information-slab-circle-outline"
+              size="20px"
+              class="cursor-help"
+            />
+            <v-tooltip activator="parent" location="start">
+              Tooltip Tooltip Tooltip Tooltip
+            </v-tooltip>
+          </div>
+        </template>
+      </v-text-field>
     </div>
 
     <div class="flex mt-8">
