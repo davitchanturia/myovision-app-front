@@ -10,14 +10,7 @@ export const useConfigStore = defineStore("config", {
       general_config_description: "",
     };
   },
-  getters: {
-    amg_config_options() {
-      return this.amg_config;
-    },
-    general_config_options() {
-      return this.general_config;
-    },
-  },
+
   actions: {
     async initialize() {
       const { data, error } = await getDefaultConfig();

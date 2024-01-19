@@ -11,7 +11,8 @@
         variant="outlined"
         type="number"
         :min="config.minimum"
-        step="any"
+        :max="config.maximum"
+        :step="config.step ?? 'any'"
         class="capitalize"
       >
         <template #append-inner>
@@ -41,7 +42,7 @@
           variant="outlined"
           :type="config.type"
           :min="config.minimum"
-          step="any"
+          :step="config.step ?? 'any'"
           class="capitalize"
         >
           <template #append-inner>
