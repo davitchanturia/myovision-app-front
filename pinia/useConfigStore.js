@@ -5,7 +5,9 @@ export const useConfigStore = defineStore("config", {
   state: () => {
     return {
       amg_config: null,
+      amg_config_description: "",
       general_config: null,
+      general_config_description: "",
     };
   },
   getters: {
@@ -21,8 +23,12 @@ export const useConfigStore = defineStore("config", {
       const { data, error } = await getDefaultConfig();
 
       if (!error.value) {
-        this.amg_config = data.value?.amg_config;
-        this.general_config = data.value?.general_config;
+        this.amg_config = data.value?.AmgConfig?.properties;
+        this.general_config = data.value?.GeneralConfig?.properties;
+
+        this.amg_config_description = data.value?.AmgConfig?.description;
+        this.general_config_description =
+          data.value?.GeneralConfig?.description;
       }
     },
   },

@@ -1,14 +1,16 @@
 <template>
   <form @submit.prevent="submitHandler">
-    <div class="grid grid-cols-2 gap-2">
+    <h1>{{ configStore.amg_config_description }}</h1>
+
+    <div class="grid grid-cols-2 gap-2 mt-4">
       <v-text-field
         v-for="(config, i) in AmgConfigObj"
         :key="i"
-        v-model.number="config.value"
-        :label="replaceUnderscoresWithSpaces(config.label)"
+        v-model.number="config.default"
+        :label="config.title"
         variant="outlined"
         type="number"
-        :min="0"
+        :min="config.minimum"
         step="any"
         class="capitalize"
       >
@@ -20,7 +22,7 @@
               class="cursor-help"
             />
             <v-tooltip activator="parent" location="start">
-              Tooltip Tooltip Tooltip Tooltip
+              {{ config.description }}
             </v-tooltip>
           </div>
         </template>
@@ -28,42 +30,48 @@
     </div>
 
     <div class="mt-8">
-      <v-text-field
-        v-for="(config, i) in GeneralConfigObj"
-        :key="i"
-        v-model.number="config.value"
-        :label="replaceUnderscoresWithSpaces(config.label)"
-        :min="0"
-        step="any"
-        variant="outlined"
-        class="capitalize"
-        type="number"
-      >
-        <template #append-inner>
-          <div>
-            <v-icon
-              icon="mdi-information-slab-circle-outline"
-              size="20px"
-              class="cursor-help"
-            />
-            <v-tooltip activator="parent" location="start">
-              Tooltip Tooltip Tooltip Tooltip
-            </v-tooltip>
-          </div>
-        </template>
-      </v-text-field>
+      <h1>{{ configStore.general_config_description }}</h1>
+
+      <div class="mt-4">
+        <v-text-field
+          v-for="(config, i) in GeneralConfigObj"
+          :key="i"
+          v-model.number="config.default"
+          :label="config.title"
+          variant="outlined"
+          :type="config.type"
+          :min="config.minimum"
+          step="any"
+          class="capitalize"
+        >
+          <template #append-inner>
+            <div>
+              <v-icon
+                icon="mdi-information-slab-circle-outline"
+                size="20px"
+                class="cursor-help"
+              />
+              <v-tooltip activator="parent" location="start">
+                {{ config.description }}
+              </v-tooltip>
+            </div>
+          </template>
+        </v-text-field>
+      </div>
     </div>
 
     <div class="flex mt-8">
       <ImageUploader
         v-model="primaryImage"
         label="primary"
+        required
         @upload:image="savePrimaryImageHandler"
       />
       <ImageUploader
-        v-if="useForValidation"
+        v-if="useForInference"
         v-model="secondaryImage"
         label="secondary"
+        :required="false"
         @upload:image="saveSecondaryImageHandler"
       />
     </div>
@@ -80,17 +88,17 @@ import { useConfigStore } from "../pinia/useConfigStore";
 
 const configStore = useConfigStore();
 
-defineEmits(["closeDialog"]);
+const emit = defineEmits(["closeDialog", "formSubmited"]);
 
-defineProps({
-  useForValidation: {
+const props = defineProps({
+  useForInference: {
     type: Boolean,
     default: false,
   },
 });
 
-const primaryImage = ref();
-const secondaryImage = ref();
+const primaryImage = ref(null);
+const secondaryImage = ref(null);
 
 const savePrimaryImageHandler = (file) => {
   primaryImage.value = file;
@@ -100,34 +108,43 @@ const saveSecondaryImageHandler = (file) => {
   secondaryImage.value = file;
 };
 
-const replaceUnderscoresWithSpaces = (key) => {
-  return key.replaceAll("_", " ");
-};
+const AmgConfigObj = ref(configStore.amg_config);
+const GeneralConfigObj = ref(configStore.general_config);
 
-const baseConfigUpdater = (config_key) => {
-  const x = [];
+const updatedDataForRequest = (configJson) => {
+  const modifiedJSON = {};
 
-  for (const [key, value] of Object.entries(config_key)) {
-    x.push({ label: key, value: value });
+  // Iterate over the properties of the original JSON
+  for (const key in configJson) {
+    if (configJson.hasOwnProperty(key)) {
+      // Check if the nested object exists for the current key
+      if (configJson[key] && typeof configJson[key] === "object") {
+        // Extract only the "name" property from the nested object
+        modifiedJSON[key] = configJson[key].default;
+      }
+    }
   }
-  return x;
+
+  return modifiedJSON;
 };
 
-const updatedAmgConfig = computed(() =>
-  baseConfigUpdater(configStore.amg_config_options),
-);
+const submitHandler = async () => {
+  const config = {
+    amg_config: updatedDataForRequest(configStore.amg_config_options),
+    general_config: updatedDataForRequest(configStore.general_config_options),
+  };
 
-const updatedGeneralConfig = computed(() =>
-  baseConfigUpdater(configStore.general_config_options),
-);
+  const jsonConfig = JSON.stringify(config);
 
-const AmgConfigObj = ref(updatedAmgConfig.value);
-const GeneralConfigObj = ref(updatedGeneralConfig.value);
+  const payload = {
+    config: jsonConfig,
+    image: primaryImage.value,
+  };
 
-const submitHandler = () => {
-  // console.log(AmgConfigObj.value);
-  // console.log(GeneralConfigObj.value);
-  // console.log(primaryImage.value);
-  // console.log(secondaryImage.value);
+  if (props.useForInference) {
+    payload.image_secondary = secondaryImage.value;
+  }
+
+  emit("formSubmited", payload);
 };
 </script>

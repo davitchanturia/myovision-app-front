@@ -8,7 +8,7 @@
     <v-sheet
       class="!px-6 !py-6 relative h-full !flex flex-column gap-4 text-light-on-surface"
     >
-      <baseForm use-for-validation>
+      <baseForm @form-submited="sendRequestHandler">
         <template #close>
           <v-btn variant="text" @click="showDialog = false"> close </v-btn>
         </template>
@@ -19,9 +19,24 @@
 
 <script setup>
 import { useVModel } from "@vueuse/core";
+import { validate } from "../services/validation.js";
 
 const props = defineProps(["modelValue"]);
 
 const emit = defineEmits(["update:modelValue"]);
 const showDialog = useVModel(props, "modelValue", emit);
+
+const sendRequestHandler = async (data) => {
+  const formData = new FormData();
+  formData.append("image", data.image);
+  formData.append("config", data.config);
+
+  const { data: response, error } = await validate(formData);
+
+  if (!error.value) {
+    // save response
+    // navigate
+    navigateTo({ path: "/validation" });
+  }
+};
 </script>
