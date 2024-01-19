@@ -8,7 +8,7 @@
     <v-sheet
       class="!px-6 !py-6 relative h-full !flex flex-column gap-4 text-light-on-surface"
     >
-      <baseForm>
+      <baseForm use-for-validation>
         <template #close>
           <v-btn variant="text" @click="showDialog = false"> close </v-btn>
         </template>

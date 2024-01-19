@@ -11,7 +11,11 @@
         :min="0"
         step="any"
         class="capitalize"
-      />
+      >
+        <v-tooltip activator="parent" location="start">
+          Tooltip Tooltip Tooltip Tooltip
+        </v-tooltip>
+      </v-text-field>
     </div>
 
     <div class="mt-8">
@@ -28,7 +32,21 @@
       />
     </div>
 
-    <div class="flex justify-end gap-1">
+    <div class="flex mt-8">
+      <ImageUploader
+        v-model="primaryImage"
+        label="primary"
+        @upload:image="savePrimaryImageHandler"
+      />
+      <ImageUploader
+        v-if="useForValidation"
+        v-model="secondaryImage"
+        label="secondary"
+        @upload:image="saveSecondaryImageHandler"
+      />
+    </div>
+
+    <div class="flex justify-end gap-1 mt-3">
       <slot name="close" />
       <v-btn variant="outlined" type="submit"> Submit </v-btn>
     </div>
@@ -41,6 +59,24 @@ import { useConfigStore } from "../pinia/useConfigStore";
 const configStore = useConfigStore();
 
 defineEmits(["closeDialog"]);
+
+defineProps({
+  useForValidation: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const primaryImage = ref();
+const secondaryImage = ref();
+
+const savePrimaryImageHandler = (file) => {
+  primaryImage.value = file;
+};
+
+const saveSecondaryImageHandler = (file) => {
+  secondaryImage.value = file;
+};
 
 const replaceUnderscoresWithSpaces = (key) => {
   return key.replaceAll("_", " ");
@@ -67,7 +103,9 @@ const AmgConfigObj = ref(updatedAmgConfig.value);
 const GeneralConfigObj = ref(updatedGeneralConfig.value);
 
 const submitHandler = () => {
-  console.log(AmgConfigObj.value);
-  console.log(GeneralConfigObj.value);
+  // console.log(AmgConfigObj.value);
+  // console.log(GeneralConfigObj.value);
+  // console.log(primaryImage.value);
+  // console.log(secondaryImage.value);
 };
 </script>
