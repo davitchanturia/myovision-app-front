@@ -134,8 +134,8 @@ const updatedDataForRequest = (configJson) => {
 
 const submitHandler = async () => {
   const config = {
-    amg_config: updatedDataForRequest(configStore.amg_config_options),
-    general_config: updatedDataForRequest(configStore.general_config_options),
+    amg_config: updatedDataForRequest(AmgConfigObj.value),
+    general_config: updatedDataForRequest(GeneralConfigObj.value),
   };
 
   const jsonConfig = JSON.stringify(config);
