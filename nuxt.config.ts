@@ -11,6 +11,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       backendBase: process.env.NUXT_PUBLIC_BACKEND_BASE,
+      websocketBase: process.env.NUXT_PUBLIC_WEBSOCKET_BASE,
     },
   },
 });
