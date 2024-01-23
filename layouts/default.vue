@@ -4,7 +4,7 @@
       class="w-full"
       :class="connectionStore.isConnected ? 'bg-green-200' : 'bg-red-200'"
     >
-      <div class="w-full max-w-5xl mx-auto flex justify-end py-1">
+      <div class="w-full mx-auto flex justify-end py-1 pr-32">
         <div>
           <v-icon :icon="connectionIcon" class="text-white cursor-pointer" />
 
