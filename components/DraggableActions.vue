@@ -1,11 +1,8 @@
 <template>
-  <div ref="draggableActionsEl" :style="style" style="position: fixed">
-    <v-card class="w-80 !p-5 bg-white cursor-grabbing" style="position: fixed">
-      <div class="flex items-center">
-        <v-icon icon="mdi-drag" />
-        <p class="text-sm prevent-select">Drag the component where you want</p>
-      </div>
-      <div class="grid grid-cols-2 gap-3 mt-3">
+  <div class="w-80">
+    <div class="!p-5 bg-white border-2 border-sha border-black rounded-lg">
+      <div class="text-center text-lg">Validation actions</div>
+      <div class="grid grid-cols-1 gap-3 mt-3">
         <v-btn class="col-span-1" @click="emit('update:action', 0)">
           <v-icon icon="mdi-close-outline" />
         </v-btn>
@@ -19,7 +16,7 @@
           skip
         </v-btn>
       </div>
-    </v-card>
+    </div>
   </div>
 </template>
 

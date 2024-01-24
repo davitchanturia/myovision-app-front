@@ -1,11 +1,10 @@
 <template>
-  <div class="w-full h-full flex justify-center items-center">
-    <div class="flex gap-6 w-full h-full bg-yellow-300">
-      <div class="h-full w-2/3">
-        <canvas ref="canvasTemplate" />
+  <div class="overflow-y-hidden max-w-[1300px] mx-auto">
+    <div class="grid grid-cols-6 gap-10 w-full mx-auto h-full my-10">
+      <div class="h-[760px] !overflow-hidden col-span-4">
+        <canvas ref="canvasTemplate" style="border: 1px solid black" />
       </div>
-
-      <DraggableActions @update:action="actionHandler" />
+      <DraggableActions class="col-span-2" @update:action="actionHandler" />
     </div>
   </div>
 </template>
@@ -15,7 +14,6 @@ import { useValidationStore } from "~/pinia/useValidationStore";
 import { contourColor } from "../helpers/colors";
 
 definePageMeta({
-  layout: false,
   middleware: ["redirect-if-not-validated"],
 });
 
@@ -29,6 +27,8 @@ const canvasTemplate = ref();
 const canvasCtx = ref();
 
 const activeCoordinates = ref();
+
+const defaultImgSize = 750;
 
 onBeforeMount(() => {
   const validationStore = useValidationStore();
@@ -83,7 +83,13 @@ const updateCanvas = (coords, canvas, { red, green, blue }) => {
     img_data.data[index + 2] = blue; // blue
     img_data.data[index + 3] = 255; // alpha
   }
+
   canvasCtx.value.putImageData(img_data, 0, 0);
+
+  canvas.style.transform = `scale(${defaultImgSize / canvas.width}, ${
+    defaultImgSize / canvas.height
+  })`;
+  canvas.style.transformOrigin = "top left";
 };
 
 const sendMessage = (param) => {
