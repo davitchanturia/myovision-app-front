@@ -16,6 +16,7 @@ import { contourColor } from "../helpers/colors";
 
 definePageMeta({
   layout: false,
+  middleware: ["redirect-if-not-validated"],
 });
 
 const validationStore = useValidationStore();
