@@ -21,21 +21,5 @@
 </template>
 
 <script setup>
-import { useDraggable } from "@vueuse/core";
-
-const draggableActionsEl = ref(null);
-
-const { x, y, style } = useDraggable(draggableActionsEl, {
-  initialValue: { x: 1240, y: 40 },
-});
-
 const emit = defineEmits(["update:action"]);
 </script>
-
-<style>
-.prevent-select {
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
-}
-</style>

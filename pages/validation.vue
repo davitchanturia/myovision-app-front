@@ -4,7 +4,7 @@
       <div class="h-[760px] !overflow-hidden col-span-4">
         <canvas ref="canvasTemplate" style="border: 1px solid black" />
       </div>
-      <DraggableActions class="col-span-2" @update:action="actionHandler" />
+      <validationActions class="col-span-2" @update:action="actionHandler" />
     </div>
   </div>
 </template>
@@ -34,7 +34,9 @@ onBeforeMount(() => {
   const validationStore = useValidationStore();
 
   const url =
-    config.public.websocketBase + validationStore.response?.image_hash;
+    config.public.websocketBase +
+    "validation/" +
+    validationStore.response?.image_hash;
 
   socket.value = new WebSocket(url);
 });

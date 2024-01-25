@@ -19,28 +19,19 @@
 
 <script setup>
 import { useVModel } from "@vueuse/core";
-import { useInferenceStore } from "~/pinia/useInferenceStore";
-import { validate } from "../services/validation.js";
+import { inference } from "../services/inference.js";
 
 const props = defineProps(["modelValue"]);
-
-const inferenceStore = useInferenceStore();
 
 const emit = defineEmits(["update:modelValue"]);
 const showDialog = useVModel(props, "modelValue", emit);
 
 const sendRequestHandler = async (data) => {
   const formData = new FormData();
-  formData.append("image", data.image);
-  formData.append("image_secondary", data.image_secondary);
+  formData.append("myotube", data.image);
+  formData.append("nuclei", data.image_secondary);
   formData.append("config", data.config);
 
-  const { data: response, error } = await validate(formData);
-
-  if (!error.value) {
-    inferenceStore.setResponse(response.value);
-
-    navigateTo({ path: "/inference" });
-  }
+  await inference(formData);
 };
 </script>

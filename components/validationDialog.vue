@@ -20,9 +20,6 @@
 <script setup>
 import { useVModel } from "@vueuse/core";
 import { validate } from "../services/validation.js";
-import { useValidationStore } from "~/pinia/useValidationStore";
-
-const validationStore = useValidationStore();
 
 const props = defineProps(["modelValue"]);
 
@@ -34,12 +31,6 @@ const sendRequestHandler = async (data) => {
   formData.append("image", data.image);
   formData.append("config", data.config);
 
-  const { data: response, error } = await validate(formData);
-
-  if (!error.value) {
-    validationStore.setResponse(response.value);
-
-    navigateTo({ path: "/validation" });
-  }
+  await validate(formData);
 };
 </script>
