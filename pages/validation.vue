@@ -2,7 +2,12 @@
   <div class="overflow-y-hidden max-w-[1300px] mx-auto">
     <div class="grid grid-cols-6 gap-10 w-full mx-auto h-full my-10">
       <div class="h-[760px] !overflow-hidden col-span-4">
-        <canvas ref="canvasTemplate" style="border: 1px solid black" />
+        <canvas
+          v-show="!canvasIsLoading"
+          ref="canvasTemplate"
+          style="border: 1px solid black"
+        />
+        <div v-if="canvasIsLoading">Image is loading ...</div>
       </div>
       <validationActions class="col-span-2" @update:action="actionHandler" />
     </div>
@@ -13,9 +18,9 @@
 import { useValidationStore } from "~/pinia/useValidationStore";
 import { contourColor } from "../helpers/colors";
 
-definePageMeta({
-  middleware: ["redirect-if-not-validated"],
-});
+// definePageMeta({
+//   middleware: ["redirect-if-not-validated"],
+// });
 
 const validationStore = useValidationStore();
 
@@ -25,6 +30,8 @@ const socket = ref(null);
 
 const canvasTemplate = ref();
 const canvasCtx = ref();
+
+const canvasIsLoading = ref(false);
 
 const activeCoordinates = ref();
 
@@ -48,6 +55,8 @@ onMounted(() => {
 
   const path = config.public.backendBase + validationStore?.response.image_path;
 
+  canvasIsLoading.value = true;
+
   const img = new Image();
   img.src = path;
   img.crossOrigin = "Anonymous";
@@ -61,8 +70,8 @@ onMounted(() => {
 
   // socket
   if (socket.value) {
-    socket.value.onmessage = function (event) {
-      handleMessage(event, canvas);
+    socket.value.onmessage = async (event) => {
+      await handleMessage(event, canvas);
     };
   }
 });
@@ -92,11 +101,13 @@ const updateCanvas = (coords, canvas, { red, green, blue }) => {
     defaultImgSize / canvas.height
   })`;
   canvas.style.transformOrigin = "top left";
+
+  canvasIsLoading.value = false;
 };
 
-const sendMessage = (param) => {
+const sendMessage = async (param) => {
   if (socket.value !== null && socket.value.readyState === WebSocket.OPEN) {
-    socket.value.send(param);
+    await socket.value.send(param);
   }
 };
 
@@ -108,7 +119,7 @@ const actionHandler = (param) => {
   sendMessage(param);
 };
 
-const handleMessage = (event, canvas) => {
+const handleMessage = async (event, canvas) => {
   const parsedData = JSON.parse(event.data);
   activeCoordinates.value = parsedData.roi_coords;
 

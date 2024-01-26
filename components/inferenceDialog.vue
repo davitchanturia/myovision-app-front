@@ -28,8 +28,8 @@ const showDialog = useVModel(props, "modelValue", emit);
 
 const sendRequestHandler = async (data) => {
   const formData = new FormData();
-  formData.append("myotube", data.image);
-  formData.append("nuclei", data.image_secondary);
+  formData.append("image", data.image);
+  formData.append("image_secondary", data.image_secondary);
   formData.append("config", data.config);
 
   await inference(formData);

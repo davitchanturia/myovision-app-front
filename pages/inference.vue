@@ -1,5 +1,6 @@
 <template>
   <div>{{ inferenceStore.response?.image_hash }}</div>
+  <div>{{ inferenceStore.response?.secondary_image_hash }}</div>
 </template>
 
 <script setup>
@@ -23,7 +24,7 @@ onBeforeMount(() => {
     "inference/" +
     inferenceStore.response?.image_hash +
     "/" +
-    inferenceStore.response?.secondary_image_hash;
+    inferenceStore.response?.image_secondary_hash;
 
   socket.value = new WebSocket(url);
 });
