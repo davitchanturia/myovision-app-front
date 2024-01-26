@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-1">
-    <label class="text-sm capitalize">{{ label }}</label>
+    <label class="text-sm capitalize font-mono">{{ label }}</label>
     <input type="file" :required="required" @change="fileUploadHandler" />
   </div>
 </template>

@@ -146,7 +146,6 @@ const handleMessage = async (event, canvas) => {
 
 const refreshImageHandler = () => {
   const color = contourColor();
-
   updateCanvas(activeCoordinates.value, canvasTemplate.value, color);
 };
 </script>

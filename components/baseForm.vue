@@ -1,6 +1,8 @@
 <template>
   <form @submit.prevent="submitHandler">
-    <h1>{{ configStore.amg_config_description }}</h1>
+    <h1 class="font-mono">
+      {{ configStore.amg_config_description }}
+    </h1>
 
     <div class="grid grid-cols-2 gap-2 mt-4">
       <v-text-field
@@ -31,7 +33,9 @@
     </div>
 
     <div class="mt-8">
-      <h1>{{ configStore.general_config_description }}</h1>
+      <h1 class="font-mono">
+        {{ configStore.general_config_description }}
+      </h1>
 
       <div class="mt-4">
         <v-text-field
@@ -65,7 +69,7 @@
       <ImageUploader
         v-model="primaryImage"
         label="primary"
-        required
+        :required="useForInference ? false : true"
         @upload:image="savePrimaryImageHandler"
       />
       <ImageUploader

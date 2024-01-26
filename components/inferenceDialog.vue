@@ -10,6 +10,11 @@
     >
       <baseForm use-for-inference @form-submited="sendRequestHandler">
         <template #close>
+          <Transition>
+            <span v-if="imageMisses" class="mt-1 text-red-500"
+              >you have to upload min 1 image</span
+            >
+          </Transition>
           <v-btn variant="text" @click="showDialog = false"> close </v-btn>
         </template>
       </baseForm>
@@ -26,12 +31,35 @@ const props = defineProps(["modelValue"]);
 const emit = defineEmits(["update:modelValue"]);
 const showDialog = useVModel(props, "modelValue", emit);
 
-const sendRequestHandler = async (data) => {
-  const formData = new FormData();
-  formData.append("image", data.image);
-  formData.append("image_secondary", data.image_secondary);
-  formData.append("config", data.config);
+const imageMisses = ref(false);
 
-  await inference(formData);
+const sendRequestHandler = async (data) => {
+  if (data.image !== null || data.image_secondary) {
+    const formData = new FormData();
+    formData.append("image", data.image);
+    formData.append("image_secondary", data.image_secondary);
+    formData.append("config", data.config);
+
+    await inference(formData);
+  }
+
+  imageMisses.value = true;
+
+  setTimeout(() => {
+    imageMisses.value = false;
+  }, 3000);
 };
 </script>
+
+<style>
+/* we will explain what these classes do next! */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+</style>

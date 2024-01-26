@@ -2,10 +2,15 @@
   <div class="overflow-y-hidden max-w-[1300px] mx-auto">
     <div class="grid grid-cols-6 gap-10 w-full mx-auto h-full my-10">
       <div class="h-[760px] !overflow-hidden col-span-4">
-        <canvas ref="canvasTemplate" style="border: 1px solid black" />
+        <canvas
+          v-show="!canvasIsLoading"
+          ref="canvasTemplate"
+          style="border: 1px solid black"
+        />
+        <div v-if="canvasIsLoading">Image is loading ...</div>
       </div>
       <div class="col-span-2">
-        <v-btn @click="sendMessage({ x: 700, y: 250 })"> click </v-btn>
+        <v-btn @click="sendMessage({ x: 700, y: 350 })"> click </v-btn>
       </div>
     </div>
   </div>
@@ -22,6 +27,8 @@ const canvasTemplate = ref();
 const canvasCtx = ref();
 
 const socket = ref(null);
+
+const canvasIsLoading = ref(false);
 
 definePageMeta({
   middleware: ["redirect-if-not-inferenced"],
@@ -46,6 +53,8 @@ onMounted(() => {
 
   const path = config.public.backendBase + inferenceStore?.response.image_path;
 
+  canvasIsLoading.value = true;
+
   const img = new Image();
   img.src = path;
   img.crossOrigin = "Anonymous";
@@ -56,6 +65,8 @@ onMounted(() => {
 
     canvasCtx.value.drawImage(img, 0, 0, canvas.width, canvas.height);
   };
+
+  canvasIsLoading.value = false;
 
   if (socket.value) {
     socket.value.onmessage = async (event) => {
