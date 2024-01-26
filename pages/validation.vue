@@ -9,7 +9,23 @@
         />
         <div v-if="canvasIsLoading">Image is loading ...</div>
       </div>
-      <validationActions class="col-span-2" @update:action="actionHandler" />
+
+      <div class="col-span-2">
+        <div class="flex justify-center">
+          <v-btn
+            border
+            flat
+            class="mx-auto w-full font-mono !text-xs !capitalize"
+            @click="refreshImageHandler"
+          >
+            Refresh image
+          </v-btn>
+        </div>
+
+        <validationActions class="mt-10" @update:action="actionHandler" />
+
+        <canvasDetails class="mt-10" />
+      </div>
     </div>
   </div>
 </template>
@@ -126,5 +142,11 @@ const handleMessage = async (event, canvas) => {
   const color = contourColor();
 
   updateCanvas(parsedData.roi_coords, canvas, color);
+};
+
+const refreshImageHandler = () => {
+  const color = contourColor();
+
+  updateCanvas(activeCoordinates.value, canvasTemplate.value, color);
 };
 </script>
