@@ -1,6 +1,14 @@
 <template>
-  <div>{{ inferenceStore.response?.image_hash }}</div>
-  <div>{{ inferenceStore.response?.secondary_image_hash }}</div>
+  <div class="overflow-y-hidden max-w-[1300px] mx-auto">
+    <div class="grid grid-cols-6 gap-10 w-full mx-auto h-full my-10">
+      <div class="h-[760px] !overflow-hidden col-span-4">
+        <canvas ref="canvasTemplate" style="border: 1px solid black" />
+      </div>
+      <div class="col-span-2">
+        <v-btn @click="sendMessage({ x: 700, y: 250 })"> click </v-btn>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -9,6 +17,9 @@ import { useInferenceStore } from "~/pinia/useInferenceStore";
 const inferenceStore = useInferenceStore();
 
 const config = useRuntimeConfig();
+
+const canvasTemplate = ref();
+const canvasCtx = ref();
 
 const socket = ref(null);
 
@@ -30,17 +41,37 @@ onBeforeMount(() => {
 });
 
 onMounted(() => {
-  console.log(socket.value);
+  const canvas = canvasTemplate.value;
+  canvasCtx.value = canvas.getContext("2d", { willReadFrequently: true });
+
+  const path = config.public.backendBase + inferenceStore?.response.image_path;
+
+  const img = new Image();
+  img.src = path;
+  img.crossOrigin = "Anonymous";
+
+  img.onload = () => {
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    canvasCtx.value.drawImage(img, 0, 0, canvas.width, canvas.height);
+  };
+
   if (socket.value) {
-    socket.value.onmessage = function (event) {
-      console.log(socket.value.readyState);
+    socket.value.onmessage = async (event) => {
+      await handleMessage(event);
     };
   }
 });
 
-const sendMessage = (param) => {
+const sendMessage = (data) => {
+  const updatedData = JSON.stringify({ x: data.x, y: data.y });
   if (socket.value !== null && socket.value.readyState === WebSocket.OPEN) {
-    socket.value.send(param);
+    socket.value.send(updatedData);
   }
+};
+
+const handleMessage = async (event) => {
+  console.log(event);
 };
 </script>
