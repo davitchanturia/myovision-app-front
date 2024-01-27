@@ -1,6 +1,6 @@
 <template>
   <div class="min-w-80 w-full">
-    <div class="!p-5 bg-white border border-sha border-[#e0e0e0] rounded-lg">
+    <div class="!p-5 bg-white border !border-black rounded-lg">
       <div class="text-center text-lg uppercase font-mono">
         Validation actions
       </div>

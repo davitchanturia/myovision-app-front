@@ -13,7 +13,7 @@
       <div class="col-span-2">
         <div class="flex justify-center">
           <v-btn
-            border
+            variant="outlined"
             flat
             class="mx-auto w-full font-mono !text-xs !capitalize"
             @click="refreshImageHandler"
@@ -65,6 +65,8 @@ onBeforeMount(() => {
 });
 
 onMounted(() => {
+  const validationStore = useValidationStore();
+
   // canvas
   const canvas = canvasTemplate.value;
   canvasCtx.value = canvas.getContext("2d", { willReadFrequently: true });
