@@ -1,28 +1,26 @@
 <template>
-  <div class="overflow-y-hidden max-w-[1300px] mx-auto">
-    <div class="grid grid-cols-6 gap-10 w-full mx-auto h-full my-10">
-      <div class="h-[760px] !overflow-hidden col-span-4">
-        <canvas ref="canvasTemplate" style="border: 1px solid black" />
+  <NuxtLayout name="page">
+    <template #canvas>
+      <canvas ref="canvasTemplate" style="border: 1px solid black" />
+    </template>
+
+    <template #rightSide>
+      <div class="flex justify-center">
+        <v-btn
+          variant="outlined"
+          flat
+          class="mx-auto w-full font-mono !text-xs !capitalize"
+          @click="refreshImageHandler"
+        >
+          Refresh image
+        </v-btn>
       </div>
 
-      <div class="col-span-2">
-        <div class="flex justify-center">
-          <v-btn
-            variant="outlined"
-            flat
-            class="mx-auto w-full font-mono !text-xs !capitalize"
-            @click="refreshImageHandler"
-          >
-            Refresh image
-          </v-btn>
-        </div>
+      <validationActions class="mt-10" @update:action="actionHandler" />
 
-        <validationActions class="mt-10" @update:action="actionHandler" />
-
-        <canvasDetails class="mt-10" />
-      </div>
-    </div>
-  </div>
+      <canvasDetails class="mt-10" />
+    </template>
+  </NuxtLayout>
 </template>
 
 <script setup>

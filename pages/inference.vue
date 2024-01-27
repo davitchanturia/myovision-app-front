@@ -1,28 +1,27 @@
 <template>
-  <div class="overflow-y-hidden max-w-[1300px] mx-auto">
-    <div class="grid grid-cols-6 w-full mx-auto h-full my-10">
-      <div class="h-[760px] !overflow-hidden col-span-4">
-        <canvas
-          v-show="!canvasIsLoading"
-          ref="canvasTemplate"
-          style="border: 1px solid black"
-          @click="getCursorPosition"
-        />
-        <div v-if="canvasIsLoading">Image is loading ...</div>
-      </div>
-      <div class="col-span-2">
-        <div v-if="noResult === true" class="font-mono text-sm">
-          no results were found, try on different point.
-        </div>
+  <NuxtLayout name="page">
+    <template #canvas>
+      <canvas
+        v-show="!canvasIsLoading"
+        ref="canvasTemplate"
+        style="border: 1px solid black"
+        @click="getCursorPosition"
+      />
+      <div v-if="canvasIsLoading">Image is loading ...</div>
+    </template>
 
-        <inferenceDataViewer
-          v-else-if="noResult === false"
-          :myotube-data="myotubeData"
-          :clusters-data="clusterData"
-        />
+    <template #rightSide>
+      <div v-if="noResult === true" class="font-mono text-sm">
+        no results were found, try on different point.
       </div>
-    </div>
-  </div>
+
+      <inferenceDataViewer
+        v-else-if="noResult === false"
+        :myotube-data="myotubeData"
+        :clusters-data="clusterData"
+      />
+    </template>
+  </NuxtLayout>
 </template>
 
 <script setup>

@@ -19,8 +19,16 @@
       </div>
     </div>
 
-    <div class="flex-1 bg-[#fefefe]">
+    <div class="flex-1 bg-[#fefefe] relative">
       <slot />
+      <div
+        v-if="route.name !== 'index'"
+        class="w-10 h-10 absolute left-7 top-4"
+      >
+        <v-btn @click="navigateTo('/')">
+          <v-icon icon="mdi-arrow-left" />
+        </v-btn>
+      </div>
     </div>
   </div>
 </template>
@@ -33,4 +41,8 @@ const connectionStore = useConnectionStore();
 const connectionIcon = computed(() =>
   connectionStore.isConnected ? "mdi mdi-wifi" : "mdi-wifi-off",
 );
+
+const route = useRoute();
+
+console.log(route);
 </script>
