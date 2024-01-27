@@ -12,10 +12,4 @@ export const inference = async (inferenceData) => {
   }
 
   return data;
-
-  // if (!error.value) {
-  //   inferenceStore.setResponse(response);
-
-  //   navigateTo({ path: "/inference" });
-  // }
 };

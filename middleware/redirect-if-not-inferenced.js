@@ -1,11 +1,11 @@
 import { useInferenceStore } from "~/pinia/useInferenceStore";
 
-const inferenceStore = useInferenceStore();
-
 export default defineNuxtRouteMiddleware((_to, _from) => {
+  const inferenceStore = useInferenceStore();
+
   if (
-    inferenceStore.response?.image_hash === null ||
-    inferenceStore.response?.image_path === null
+    inferenceStore.responseValue?.image_hash === null ||
+    inferenceStore.responseValue?.image_path === null
   ) {
     return navigateTo("/");
   }

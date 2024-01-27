@@ -29,9 +29,9 @@
 import { useValidationStore } from "~/pinia/useValidationStore";
 import { contourColor } from "../helpers/colors";
 
-// definePageMeta({
-//   middleware: ["redirect-if-not-validated"],
-// });
+definePageMeta({
+  middleware: ["redirect-if-not-validated"],
+});
 
 const config = useRuntimeConfig();
 
