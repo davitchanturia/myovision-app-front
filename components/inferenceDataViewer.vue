@@ -9,7 +9,7 @@
     </div>
 
     <div
-      class="w-full grid grid-cols-2 gap-1 font-this text-sm border !border-black p-4 rounded-lg"
+      class="w-full grid grid-cols-2 gap-3 font-this text-sm border !border-black p-4 rounded-lg max-h-72 overflow-y-auto"
     >
       <div v-for="(cluster, i) in clustersData" :key="i" class="col-span-1">
         <div v-for="(clusterItem, i) in cluster" :key="i">
