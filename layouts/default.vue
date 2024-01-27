@@ -25,7 +25,7 @@
         v-if="route.name !== 'index'"
         class="w-10 h-10 absolute left-7 top-4"
       >
-        <v-btn @click="navigateTo('/')">
+        <v-btn flat @click="navigateTo('/')">
           <v-icon icon="mdi-arrow-left" />
         </v-btn>
       </div>
@@ -43,6 +43,4 @@ const connectionIcon = computed(() =>
 );
 
 const route = useRoute();
-
-console.log(route);
 </script>

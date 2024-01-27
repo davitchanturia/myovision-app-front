@@ -11,15 +11,27 @@
     </template>
 
     <template #rightSide>
-      <div v-if="noResult === true" class="font-mono text-sm">
-        no results were found, try on different point.
-      </div>
+      <div class="flex flex-col justify-between h-full">
+        <div>
+          <div v-if="noResult === true" class="font-mono text-sm">
+            Myotube not found.
+          </div>
 
-      <inferenceDataViewer
-        v-else-if="noResult === false"
-        :myotube-data="myotubeData"
-        :clusters-data="clusterData"
-      />
+          <inferenceDataViewer
+            v-else-if="noResult === false"
+            :myotube-data="myotubeData"
+            :clusters-data="clusterData"
+          />
+        </div>
+
+        <infoDialog>
+          The inference page depicts the results and provides key information
+          metrics.
+          <br />
+          <br />
+          Click on a Myotube on the image to retrieve data.
+        </infoDialog>
+      </div>
     </template>
   </NuxtLayout>
 </template>

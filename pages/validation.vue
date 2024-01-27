@@ -5,20 +5,31 @@
     </template>
 
     <template #rightSide>
-      <div class="flex justify-center">
-        <v-btn
-          variant="outlined"
-          flat
-          class="mx-auto w-full font-mono !text-xs !capitalize"
-          @click="refreshImageHandler"
-        >
-          Refresh image
-        </v-btn>
+      <div class="flex flex-col justify-between h-full">
+        <div>
+          <div class="flex justify-center">
+            <v-btn
+              variant="outlined"
+              flat
+              class="mx-auto w-full font-mono !text-xs !capitalize"
+              @click="refreshImageHandler"
+            >
+              Refresh image
+            </v-btn>
+          </div>
+
+          <validationActions class="mt-10" @update:action="actionHandler" />
+
+          <canvasDetails class="mt-10" />
+        </div>
+
+        <infoDialog>
+          The validation page provides a way to collect labelled data by
+          interactively verifying model predictions. The contours are displayed
+          one after the other allowing the user to classify each contour using 4
+          different actions
+        </infoDialog>
       </div>
-
-      <validationActions class="mt-10" @update:action="actionHandler" />
-
-      <canvasDetails class="mt-10" />
     </template>
   </NuxtLayout>
 </template>
