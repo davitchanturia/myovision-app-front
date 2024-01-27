@@ -22,14 +22,15 @@
             :myotube-data="myotubeData"
             :clusters-data="clusterData"
           />
+
+          <div v-if="noResult === null">
+            Click on a Myotube on the image to retrieve data.
+          </div>
         </div>
 
         <infoDialog>
           The inference page depicts the results and provides key information
           metrics.
-          <br />
-          <br />
-          Click on a Myotube on the image to retrieve data.
         </infoDialog>
       </div>
     </template>
