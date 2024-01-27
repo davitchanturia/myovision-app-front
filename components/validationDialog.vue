@@ -20,17 +20,24 @@
 <script setup>
 import { useVModel } from "@vueuse/core";
 import { validate } from "../services/validation.js";
+import { useValidationStore } from "~/pinia/useValidationStore";
 
 const props = defineProps(["modelValue"]);
 
 const emit = defineEmits(["update:modelValue"]);
 const showDialog = useVModel(props, "modelValue", emit);
 
+const validationStore = useValidationStore();
+
 const sendRequestHandler = async (data) => {
   const formData = new FormData();
   formData.append("image", data.image);
   formData.append("config", data.config);
 
-  await validate(formData);
+  const response = await validate(formData);
+
+  validationStore.setResponse(response);
+
+  navigateTo({ path: "/validation" });
 };
 </script>

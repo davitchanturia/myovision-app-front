@@ -1,19 +1,21 @@
-import { useInferenceStore } from "~/pinia/useInferenceStore";
-
-export const inference = async (data) => {
+export const inference = async (inferenceData) => {
   const config = useRuntimeConfig();
   const path = config.public.backendBase + "inference/";
 
-  const inferenceStore = useInferenceStore();
-
-  const { data: response, error } = useFetch(path, {
+  const { data, error } = await useFetch(path, {
     method: "POST",
-    body: data,
+    body: inferenceData,
   });
 
-  if (!error.value) {
-    inferenceStore.setResponse(response);
-
-    navigateTo({ path: "/inference" });
+  if (error.value) {
+    throw new Error(error.value.message);
   }
+
+  return data;
+
+  // if (!error.value) {
+  //   inferenceStore.setResponse(response);
+
+  //   navigateTo({ path: "/inference" });
+  // }
 };

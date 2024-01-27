@@ -2,12 +2,7 @@
   <div class="overflow-y-hidden max-w-[1300px] mx-auto">
     <div class="grid grid-cols-6 gap-10 w-full mx-auto h-full my-10">
       <div class="h-[760px] !overflow-hidden col-span-4">
-        <canvas
-          v-show="!canvasIsLoading"
-          ref="canvasTemplate"
-          style="border: 1px solid black"
-        />
-        <div v-if="canvasIsLoading">Image is loading ...</div>
+        <canvas ref="canvasTemplate" style="border: 1px solid black" />
       </div>
 
       <div class="col-span-2">
@@ -38,8 +33,6 @@ import { contourColor } from "../helpers/colors";
 //   middleware: ["redirect-if-not-validated"],
 // });
 
-const validationStore = useValidationStore();
-
 const config = useRuntimeConfig();
 
 const socket = ref(null);
@@ -59,7 +52,7 @@ onBeforeMount(() => {
   const url =
     config.public.websocketBase +
     "validation/" +
-    validationStore.response?.image_hash;
+    validationStore.responseValue.value?.image_hash;
 
   socket.value = new WebSocket(url);
 });
@@ -71,7 +64,9 @@ onMounted(() => {
   const canvas = canvasTemplate.value;
   canvasCtx.value = canvas.getContext("2d", { willReadFrequently: true });
 
-  const path = config.public.backendBase + validationStore?.response.image_path;
+  const path =
+    config.public.backendBase +
+    validationStore?.responseValue.value?.image_path;
 
   canvasIsLoading.value = true;
 

@@ -1,19 +1,15 @@
-import { useValidationStore } from "~/pinia/useValidationStore";
-
-export const validate = async (data) => {
+export const validate = async (validationData) => {
   const config = useRuntimeConfig();
   const path = config.public.backendBase + "validation/";
 
-  const validationStore = useValidationStore();
-
-  const { data: response, error } = useFetch(path, {
+  const { data, error } = await useFetch(path, {
     method: "POST",
-    body: data,
+    body: validationData,
   });
 
-  if (!error.value) {
-    validationStore.setResponse(response);
-
-    navigateTo({ path: "/validation" });
+  if (error.value) {
+    throw new Error(error.value.message);
   }
+
+  return data;
 };

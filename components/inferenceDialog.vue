@@ -25,6 +25,7 @@
 <script setup>
 import { useVModel } from "@vueuse/core";
 import { inference } from "../services/inference.js";
+import { useInferenceStore } from "~/pinia/useInferenceStore";
 
 const props = defineProps(["modelValue"]);
 
@@ -33,21 +34,35 @@ const showDialog = useVModel(props, "modelValue", emit);
 
 const imageMisses = ref(false);
 
-const sendRequestHandler = async (data) => {
-  if (data.image !== null || data.image_secondary) {
-    const formData = new FormData();
-    formData.append("image", data.image);
-    formData.append("image_secondary", data.image_secondary);
-    formData.append("config", data.config);
+const inferenceStore = useInferenceStore();
 
-    await inference(formData);
+const sendRequestHandler = async (data) => {
+  if (data.image === null && data.image_secondary === null) {
+    imageMisses.value = true;
+
+    setTimeout(() => {
+      imageMisses.value = false;
+    }, 3000);
+
+    return;
   }
 
-  imageMisses.value = true;
+  const formData = new FormData();
+  formData.append("config", data.config);
 
-  setTimeout(() => {
-    imageMisses.value = false;
-  }, 3000);
+  if (data.image !== null) {
+    formData.append("image", data.image);
+  }
+
+  if (data.image_secondary !== null) {
+    formData.append("image_secondary", data.image_secondary);
+  }
+
+  const response = await inference(formData);
+
+  inferenceStore.setResponse(response);
+
+  navigateTo({ path: "/inference" });
 };
 </script>
 

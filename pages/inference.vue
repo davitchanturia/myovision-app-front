@@ -29,8 +29,6 @@
 import { convertJsonToArray } from "../helpers/array";
 import { useInferenceStore } from "~/pinia/useInferenceStore";
 
-const inferenceStore = useInferenceStore();
-
 const config = useRuntimeConfig();
 
 const canvasTemplate = ref();
@@ -55,18 +53,21 @@ onBeforeMount(() => {
   const url =
     config.public.websocketBase +
     "inference/" +
-    inferenceStore.response?.image_hash +
+    inferenceStore.responseValue.value?.image_hash +
     "/" +
-    inferenceStore.response?.image_secondary_hash;
+    inferenceStore.responseValue.value?.image_secondary_hash;
 
   socket.value = new WebSocket(url);
 });
 
 onMounted(() => {
+  const inferenceStore = useInferenceStore();
+
   const canvas = canvasTemplate.value;
   canvasCtx.value = canvas.getContext("2d", { willReadFrequently: true });
 
-  const path = config.public.backendBase + inferenceStore?.response.image_path;
+  const path =
+    config.public.backendBase + inferenceStore?.responseValue.value?.image_path;
 
   canvasIsLoading.value = true;
 
