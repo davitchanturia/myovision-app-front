@@ -88,6 +88,11 @@ onMounted(() => {
     canvas.height = img.height;
 
     canvasCtx.value.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    canvas.style.transform = `scale(${defaultImgSize / canvas.width}, ${
+      defaultImgSize / canvas.height
+    })`;
+    canvas.style.transformOrigin = "top left";
   };
 
   // socket
@@ -119,13 +124,19 @@ const updateCanvas = (coords, canvas, { red, green, blue }) => {
 
   canvasCtx.value.putImageData(img_data, 0, 0);
 
-  canvas.style.transform = `scale(${defaultImgSize / canvas.width}, ${
-    defaultImgSize / canvas.height
-  })`;
-  canvas.style.transformOrigin = "top left";
-
   canvasIsLoading.value = false;
 };
+
+async function loadImageAsync(path) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = path;
+    img.crossOrigin = "Anonymous";
+
+    img.onload = () => resolve(img);
+    img.onerror = (error) => reject(error);
+  });
+}
 
 const sendMessage = async (param) => {
   if (socket.value !== null && socket.value.readyState === WebSocket.OPEN) {
