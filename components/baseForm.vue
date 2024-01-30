@@ -38,30 +38,36 @@
       </h1>
 
       <div class="mt-4">
-        <v-text-field
-          v-for="(config, i) in GeneralConfigObj"
-          :key="i"
-          v-model.number="config.default"
-          :label="config.title"
-          variant="outlined"
-          :type="config.type"
-          :min="config.minimum"
-          :step="config.step ?? 'any'"
-          class="capitalize"
-        >
-          <template #append-inner>
-            <div>
-              <v-icon
-                icon="mdi-information-slab-circle-outline"
-                size="20px"
-                class="cursor-help"
-              />
-              <v-tooltip activator="parent" location="start">
-                {{ config.description }}
-              </v-tooltip>
-            </div>
-          </template>
-        </v-text-field>
+        <div v-for="(config, i) in GeneralConfigObj" :key="i">
+          <v-checkbox
+            v-if="config.type === 'boolean'"
+            v-model="config.default"
+            :label="config.title"
+          />
+          <v-text-field
+            v-else
+            v-model.number="config.default"
+            :label="config.title"
+            variant="outlined"
+            :type="config.type"
+            :min="config.minimum"
+            :step="config.step ?? 'any'"
+            class="capitalize"
+          >
+            <template #append-inner>
+              <div>
+                <v-icon
+                  icon="mdi-information-slab-circle-outline"
+                  size="20px"
+                  class="cursor-help"
+                />
+                <v-tooltip activator="parent" location="start">
+                  {{ config.description }}
+                </v-tooltip>
+              </div>
+            </template>
+          </v-text-field>
+        </div>
       </div>
     </div>
 

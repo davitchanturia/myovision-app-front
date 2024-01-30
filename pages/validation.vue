@@ -127,17 +127,6 @@ const updateCanvas = (coords, canvas, { red, green, blue }) => {
   canvasIsLoading.value = false;
 };
 
-async function loadImageAsync(path) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.src = path;
-    img.crossOrigin = "Anonymous";
-
-    img.onload = () => resolve(img);
-    img.onerror = (error) => reject(error);
-  });
-}
-
 const sendMessage = async (param) => {
   if (socket.value !== null && socket.value.readyState === WebSocket.OPEN) {
     await socket.value.send(param);
