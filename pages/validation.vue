@@ -30,6 +30,8 @@
           different actions
         </infoDialog>
       </div>
+
+      <validationIsDoneDialog v-if="validationDone" />
     </template>
   </NuxtLayout>
 </template>
@@ -141,8 +143,16 @@ const actionHandler = (param) => {
   sendMessage(param);
 };
 
+const validationDone = ref(false);
+
 const handleMessage = async (event, canvas) => {
   const parsedData = JSON.parse(event.data);
+
+  if (parsedData.contour_id === parsedData.total) {
+    validationDone.value = true;
+    return;
+  }
+
   activeCoordinates.value = parsedData.roi_coords;
 
   const color = contourColor();
