@@ -26,3 +26,19 @@ export const getContours = async (hash) => {
 
   return data;
 };
+
+export const uploadContours = async (data) => {
+  const config = useRuntimeConfig();
+  const path = config.public.backendBase + "upload_contours";
+
+  const { data, error } = await useFetch(path, {
+    method: "POST",
+    body: data,
+  });
+
+  if (error.value) {
+    throw new Error(error.value.message);
+  }
+
+  return data;
+};
