@@ -23,9 +23,6 @@ import { useConfigStore } from "../pinia/useConfigStore";
 
 const configStore = useConfigStore();
 
-const noConfigs = computed(() => configStore.amg_config);
-console.log(configStore.amg_config);
-
 const showValidationDialog = ref(false);
 const showInferenceDialog = ref(false);
 </script>
