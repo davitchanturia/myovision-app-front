@@ -27,13 +27,13 @@ export const getContours = async (hash) => {
   return data;
 };
 
-export const uploadContours = async (data) => {
+export const uploadContours = async (validationData) => {
   const config = useRuntimeConfig();
-  const path = config.public.backendBase + "upload_contours";
+  const path = config.public.backendBase + "upload_contours/";
 
   const { data, error } = await useFetch(path, {
     method: "POST",
-    body: data,
+    body: validationData,
   });
 
   if (error.value) {
@@ -41,4 +41,20 @@ export const uploadContours = async (data) => {
   }
 
   return data;
+};
+
+export const downloadData = (downloadData) => {
+  const jsonString = JSON.stringify(downloadData, null, 2);
+
+  const blob = new Blob([jsonString], { type: "application/json" });
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "data.json";
+
+  document.body.appendChild(link);
+
+  link.click();
+
+  document.body.removeChild(link);
 };

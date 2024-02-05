@@ -7,14 +7,14 @@
     <template #rightSide>
       <div class="flex flex-col justify-between h-full">
         <div>
-          <div class="flex justify-center">
+          <div class="grid grid-cols-2 gap-2 w-full font-mono">
+            <v-btn variant="text" class="col-span-1"> upload </v-btn>
             <v-btn
-              variant="outlined"
-              flat
-              class="mx-auto w-full font-mono !text-xs !capitalize"
-              @click="refreshImageHandler"
+              variant="text"
+              class="col-span-1"
+              @click="downloadDataHandler"
             >
-              Refresh image
+              download
             </v-btn>
           </div>
 
@@ -39,6 +39,7 @@
 <script setup>
 import { useValidationStore } from "~/pinia/useValidationStore";
 import { contourColor } from "../helpers/colors";
+import { getContours, downloadData } from "../services/validation.js";
 
 definePageMeta({
   middleware: ["redirect-if-not-validated"],
@@ -57,6 +58,8 @@ const activeCoordinates = ref();
 
 const defaultImgSize = 750;
 
+const downloadCoordsData = ref(null);
+
 onBeforeMount(() => {
   const validationStore = useValidationStore();
 
@@ -68,7 +71,7 @@ onBeforeMount(() => {
   socket.value = new WebSocket(url);
 });
 
-onMounted(() => {
+onMounted(async () => {
   const validationStore = useValidationStore();
 
   // canvas
@@ -91,10 +94,12 @@ onMounted(() => {
 
     canvasCtx.value.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-    canvas.style.transform = `scale(${defaultImgSize / canvas.width}, ${
-      defaultImgSize / canvas.height
-    })`;
-    canvas.style.transformOrigin = "top left";
+    setTimeout(() => {
+      canvas.style.transform = `scale(${defaultImgSize / canvas.width}, ${
+        defaultImgSize / canvas.height
+      })`;
+      canvas.style.transformOrigin = "top left";
+    }, 200);
   };
 
   // socket
@@ -103,6 +108,12 @@ onMounted(() => {
       await handleMessage(event, canvas);
     };
   }
+
+  const response = await getContours(
+    validationStore.responseValue.value?.image_hash,
+  );
+
+  downloadCoordsData.value = response.value;
 });
 
 const updateCanvas = (coords, canvas, { red, green, blue }) => {
@@ -160,8 +171,7 @@ const handleMessage = async (event, canvas) => {
   updateCanvas(parsedData.roi_coords, canvas, color);
 };
 
-const refreshImageHandler = () => {
-  const color = contourColor();
-  updateCanvas(activeCoordinates.value, canvasTemplate.value, color);
+const downloadDataHandler = () => {
+  downloadData(downloadCoordsData.value);
 };
 </script>

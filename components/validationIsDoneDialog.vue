@@ -17,7 +17,7 @@
         <v-btn
           :disabled="downloadData == null || downloadData === undefined"
           variant="text"
-          @click="downlaodDataHandler"
+          @click="downloadDataHandler"
         >
           download coordinates
         </v-btn>
@@ -32,11 +32,11 @@
 
 <script setup>
 import { useValidationStore } from "~/pinia/useValidationStore";
-import { getContours } from "../services/validation.js";
+import { getContours, downloadData } from "../services/validation.js";
 
 const validationStore = useValidationStore();
 
-const downloadData = ref(null);
+const data = ref(null);
 
 const closeDialogHandler = (isOPen) => {
   if (!isOPen) navigateTo("/");
@@ -47,22 +47,10 @@ onMounted(async () => {
     validationStore.responseValue.value?.image_hash,
   );
 
-  downloadData.value = response.value;
+  data.value = response.value;
 });
 
-const downlaodDataHandler = () => {
-  const jsonString = JSON.stringify(downloadData.value, null, 2);
-
-  const blob = new Blob([jsonString], { type: "application/json" });
-
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "data.json";
-
-  document.body.appendChild(link);
-
-  link.click();
-
-  document.body.removeChild(link);
+const downloadDataHandler = () => {
+  downloadData(data.value);
 };
 </script>
