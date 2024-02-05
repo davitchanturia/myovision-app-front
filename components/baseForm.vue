@@ -43,7 +43,21 @@
             v-if="config.type === 'boolean'"
             v-model="config.default"
             :label="config.title"
-          />
+            class="w-1/4"
+          >
+            <template #append>
+              <div>
+                <v-icon
+                  icon="mdi-information-slab-circle-outline"
+                  size="20px"
+                  class="cursor-help"
+                />
+                <v-tooltip activator="parent" location="end">
+                  {{ config.description }}
+                </v-tooltip>
+              </div>
+            </template>
+          </v-checkbox>
           <v-text-field
             v-else
             v-model.number="config.default"
