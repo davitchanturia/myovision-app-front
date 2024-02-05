@@ -29,10 +29,7 @@
         </div>
 
         <infoDialog>
-          The inference page depicts the results and provides key information
-          metrics.
-
-          <div class="mt-5 font-semibold">General Info:</div>
+          <div class="font-semibold">General Info:</div>
           <div
             class="w-full grid grid-cols-2 gap-1 font-this text-sm border !border-black p-4 rounded-lg mt-2"
           >
