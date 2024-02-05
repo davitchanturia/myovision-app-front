@@ -96,11 +96,8 @@
 
 <script setup>
 import { useConfigStore } from "../pinia/useConfigStore";
-import { getDefaultConfig } from "../services/config.js";
 
 const configStore = useConfigStore();
-
-const { data, error } = await getDefaultConfig();
 
 const emit = defineEmits(["closeDialog", "formSubmited"]);
 

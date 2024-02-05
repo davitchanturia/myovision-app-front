@@ -1,14 +1,20 @@
 <template>
   <NuxtLayout name="page">
     <template #canvas>
-      <canvas ref="canvasTemplate" style="border: 1px solid black" />
+      <canvas ref="canvasTemplate" />
     </template>
 
     <template #rightSide>
       <div class="flex flex-col justify-between h-full">
         <div>
           <div class="grid grid-cols-2 gap-2 w-full font-mono">
-            <v-btn variant="text" class="col-span-1"> upload </v-btn>
+            <v-btn variant="text" class="col-span-1">
+              upload
+              <UploadFileDialog
+                v-model="showUploadFileDialog"
+                @upload:file="uploadFileHandler"
+              />
+            </v-btn>
             <v-btn
               variant="text"
               class="col-span-1"
@@ -39,7 +45,11 @@
 <script setup>
 import { useValidationStore } from "~/pinia/useValidationStore";
 import { contourColor } from "../helpers/colors";
-import { getContours, downloadData } from "../services/validation.js";
+import {
+  getContours,
+  downloadData,
+  uploadContours,
+} from "../services/validation.js";
 
 definePageMeta({
   middleware: ["redirect-if-not-validated"],
@@ -94,12 +104,12 @@ onMounted(async () => {
 
     canvasCtx.value.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-    setTimeout(() => {
-      canvas.style.transform = `scale(${defaultImgSize / canvas.width}, ${
-        defaultImgSize / canvas.height
-      })`;
-      canvas.style.transformOrigin = "top left";
-    }, 200);
+    // setTimeout(() => {
+    canvas.style.transform = `scale(${defaultImgSize / canvas.width}, ${
+      defaultImgSize / canvas.height
+    })`;
+    canvas.style.transformOrigin = "top left";
+    // }, 200);
   };
 
   // socket
@@ -137,6 +147,11 @@ const updateCanvas = (coords, canvas, { red, green, blue }) => {
 
   canvasCtx.value.putImageData(img_data, 0, 0);
 
+  canvas.style.transform = `scale(${defaultImgSize / canvas.width}, ${
+    defaultImgSize / canvas.height
+  })`;
+  canvas.style.transformOrigin = "top left";
+
   canvasIsLoading.value = false;
 };
 
@@ -173,5 +188,24 @@ const handleMessage = async (event, canvas) => {
 
 const downloadDataHandler = () => {
   downloadData(downloadCoordsData.value);
+};
+
+const showUploadFileDialog = ref(false);
+
+const uploadFileHandler = async (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await uploadContours(formData);
+
+  if (response.value?.batched_coords.length > 0) {
+    const color = contourColor(1);
+
+    response.value.batched_coords.forEach((element) => {
+      updateCanvas(element, canvasTemplate.value, color);
+    });
+
+    showUploadFileDialog.value = false;
+  }
 };
 </script>
