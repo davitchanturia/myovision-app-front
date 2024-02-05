@@ -31,6 +31,20 @@
         <infoDialog>
           The inference page depicts the results and provides key information
           metrics.
+
+          <div class="mt-5 font-semibold">General Info:</div>
+          <div
+            class="w-full grid grid-cols-2 gap-1 font-this text-sm border !border-black p-4 rounded-lg mt-2"
+          >
+            <div
+              v-for="(generalInfoItem, i) in inferenceStore.generalInfoValue"
+              :key="i"
+              class="col-span-1"
+            >
+              <b>{{ updatedLabel(generalInfoItem.label) }}:</b>
+              {{ generalInfoItem.value }}
+            </div>
+          </div>
         </infoDialog>
       </div>
     </template>
@@ -47,6 +61,10 @@ const canvasTemplate = ref();
 const canvasCtx = ref();
 
 const socket = ref(null);
+
+const inferenceStore = useInferenceStore();
+
+console.log(inferenceStore.responseValue.value?.general_info);
 
 const canvasIsLoading = ref(false);
 
@@ -140,5 +158,9 @@ const handleMessage = async (event) => {
   clusterData.value = parsedData?.info_data?.clusters.map((element) =>
     convertJsonToArray(element),
   );
+};
+
+const updatedLabel = (label) => {
+  return label.replace("_", " ");
 };
 </script>

@@ -2,7 +2,7 @@
   <v-btn variant="text" icon="mdi-head-question-outline">
     <v-icon name="mdi-head-question-outline" />
 
-    <v-dialog v-model="showDialog" width="700" activator="parent">
+    <v-dialog v-model="showDialog" width="900" activator="parent">
       <v-card>
         <v-card-text class="font-mono">
           <slot />
