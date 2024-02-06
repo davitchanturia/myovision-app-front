@@ -1,13 +1,12 @@
 <template>
   <NuxtLayout name="page">
     <template #canvas>
+      <div v-if="canvasIsLoading">Image is loading ...</div>
       <canvas
         v-show="!canvasIsLoading"
         ref="canvasTemplate"
-        style="border: 1px solid black"
         @click="getCursorPosition"
       />
-      <div v-if="canvasIsLoading">Image is loading ...</div>
     </template>
 
     <template #rightSide>

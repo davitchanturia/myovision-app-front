@@ -1,7 +1,8 @@
 <template>
   <NuxtLayout name="page">
     <template #canvas>
-      <canvas ref="canvasTemplate" />
+      <div v-if="canvasIsLoading">Image is loading ...</div>
+      <canvas v-show="!canvasIsLoading" ref="canvasTemplate" />
     </template>
 
     <template #rightSide>
@@ -99,19 +100,19 @@ onMounted(async () => {
   img.src = path;
   img.crossOrigin = "Anonymous";
 
-  img.onload = () => {
+  img.onload = async () => {
     canvas.width = img.width;
     canvas.height = img.height;
 
-    canvasCtx.value.drawImage(img, 0, 0, canvas.width, canvas.height);
+    await canvasCtx.value.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-    // setTimeout(() => {
     canvas.style.transform = `scale(${defaultImgSize / canvas.width}, ${
       defaultImgSize / canvas.height
     })`;
     canvas.style.transformOrigin = "top left";
-    // }, 200);
   };
+
+  canvasIsLoading.value = false;
 
   // socket
   if (socket.value) {
@@ -152,8 +153,6 @@ const updateCanvas = (coords, canvas, { red, green, blue }) => {
     defaultImgSize / canvas.height
   })`;
   canvas.style.transformOrigin = "top left";
-
-  canvasIsLoading.value = false;
 };
 
 const sendMessage = async (param) => {
