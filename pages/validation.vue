@@ -8,16 +8,17 @@
       <div class="flex flex-col justify-between h-full">
         <div>
           <div class="grid grid-cols-2 gap-2 w-full font-mono">
-            <v-btn variant="text" class="col-span-1">
-              upload
-              <UploadFileDialog
-                v-model="showUploadFileDialog"
-                @upload:file="uploadFileHandler"
-              />
-            </v-btn>
+            <fileUploader
+              v-model="uploadFileVal"
+              :required="useForInference ? false : true"
+              class="col-span-1"
+              button-text="upload"
+              :show-file-name="false"
+              @upload:file="uploadFileHandler"
+            />
             <v-btn
               variant="text"
-              class="col-span-1"
+              class="col-span-1 mt-1 !capitalize"
               @click="downloadDataHandler"
             >
               download
@@ -190,7 +191,7 @@ const downloadDataHandler = () => {
   downloadData(downloadCoordsData.value);
 };
 
-const showUploadFileDialog = ref(false);
+const uploadFileVal = ref(null);
 
 const uploadFileHandler = async (file) => {
   const formData = new FormData();
@@ -204,8 +205,6 @@ const uploadFileHandler = async (file) => {
     response.value.batched_coords.forEach((element) => {
       updateCanvas(element, canvasTemplate.value, color);
     });
-
-    showUploadFileDialog.value = false;
   }
 };
 </script>

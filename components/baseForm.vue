@@ -91,7 +91,7 @@
         :required="useForInference ? false : true"
         class="col-span-1"
         button-text="upload image"
-        @upload:image="savePrimaryImageHandler"
+        @upload:file="savePrimaryImageHandler"
       />
       <fileUploader
         v-if="useForInference"
@@ -99,7 +99,7 @@
         :required="false"
         class="col-span-1"
         button-text="upload image"
-        @upload:image="saveSecondaryImageHandler"
+        @upload:file="saveSecondaryImageHandler"
       />
     </div>
 
