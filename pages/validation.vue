@@ -10,7 +10,7 @@
           <div class="grid grid-cols-2 gap-2 w-full font-mono">
             <fileUploader
               v-model="uploadFileVal"
-              :required="useForInference ? false : true"
+              :required="false"
               class="col-span-1"
               button-text="upload"
               :show-file-name="false"
