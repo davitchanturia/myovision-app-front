@@ -61,8 +61,6 @@ const socket = ref(null);
 
 const inferenceStore = useInferenceStore();
 
-console.log(inferenceStore.responseValue.value?.general_info);
-
 const canvasIsLoading = ref(false);
 
 const myotubeData = ref({});

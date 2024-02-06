@@ -2,7 +2,7 @@
   <v-dialog v-model="showDialog" width="500" activator="parent">
     <v-sheet class="px-5 py-3">
       <div>
-        <ImageUploader
+        <fileUploader
           v-model="uploadFileVal"
           @upload:image="uploadFileHandler"
         />

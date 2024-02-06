@@ -85,23 +85,25 @@
       </div>
     </div>
 
-    <div class="flex mt-8">
-      <ImageUploader
-        v-model="primaryImage"
+    <div class="grid grid-cols-2 gap-2 mt-8">
+      <fileUploader
         label="primary"
         :required="useForInference ? false : true"
+        class="col-span-1"
+        button-text="upload image"
         @upload:image="savePrimaryImageHandler"
       />
-      <ImageUploader
+      <fileUploader
         v-if="useForInference"
-        v-model="secondaryImage"
         label="secondary"
         :required="false"
+        class="col-span-1"
+        button-text="upload image"
         @upload:image="saveSecondaryImageHandler"
       />
     </div>
 
-    <div class="flex justify-end gap-1 mt-3">
+    <div class="flex justify-end gap-1 mt-5">
       <slot name="close" />
       <v-btn variant="outlined" type="submit"> Submit </v-btn>
     </div>

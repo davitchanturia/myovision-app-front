@@ -10,6 +10,11 @@
     >
       <baseForm @form-submited="sendRequestHandler">
         <template #close>
+          <Transition>
+            <span v-if="imageMisses" class="mt-2 text-red-500 font-mono text-sm"
+              >You have to upload image</span
+            >
+          </Transition>
           <v-btn variant="text" @click="showDialog = false"> close </v-btn>
         </template>
       </baseForm>
@@ -29,7 +34,19 @@ const showDialog = useVModel(props, "modelValue", emit);
 
 const validationStore = useValidationStore();
 
+const imageMisses = ref(false);
+
 const sendRequestHandler = async (data) => {
+  if (data.image === null) {
+    imageMisses.value = true;
+
+    setTimeout(() => {
+      imageMisses.value = false;
+    }, 3000);
+
+    return;
+  }
+
   const formData = new FormData();
   formData.append("image", data.image);
   formData.append("config", data.config);

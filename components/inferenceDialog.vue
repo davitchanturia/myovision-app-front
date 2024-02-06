@@ -11,7 +11,7 @@
       <baseForm use-for-inference @form-submited="sendRequestHandler">
         <template #close>
           <Transition>
-            <span v-if="imageMisses" class="mt-1 text-red-500"
+            <span v-if="imageMisses" class="mt-2 text-red-500 font-mono text-sm"
               >you have to upload min 1 image</span
             >
           </Transition>
