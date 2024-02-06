@@ -1,6 +1,6 @@
 import { useInferenceStore } from "~/pinia/useInferenceStore";
 
-export default defineNuxtRouteMiddleware((_to, _from) => {
+export default defineNuxtRouteMiddleware(() => {
   const inferenceStore = useInferenceStore();
 
   if (

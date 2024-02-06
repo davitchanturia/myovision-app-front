@@ -1,6 +1,6 @@
 import { useValidationStore } from "~/pinia/useValidationStore";
 
-export default defineNuxtRouteMiddleware((_to, _from) => {
+export default defineNuxtRouteMiddleware(() => {
   const validationStore = useValidationStore();
 
   if (

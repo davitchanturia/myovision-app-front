@@ -13,7 +13,7 @@
       class="w-full grid grid-cols-2 gap-3 font-this text-sm border !border-black p-4 rounded-lg max-h-72 overflow-y-auto"
     >
       <div v-for="(cluster, i) in clustersData" :key="i" class="col-span-1">
-        <div v-for="(clusterItem, i) in cluster" :key="i">
+        <div v-for="(clusterItem, j) in cluster" :key="j">
           <b>{{ updatedLabel(clusterItem.label) }}:</b> {{ clusterItem.value }}
         </div>
       </div>
