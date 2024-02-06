@@ -1,3 +1,13 @@
+# env setup
+
+```bash
+cp .env.example .env
+
+NUXT_PUBLIC_BACKEND_BASE=your_backend_domain
+NUXT_PUBLIC_WEBSOCKET_BASE=your_backend_websocket_url
+
+```
+
 # Nuxt 3 Minimal Starter
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
