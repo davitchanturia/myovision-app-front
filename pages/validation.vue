@@ -128,7 +128,7 @@ onMounted(async () => {
   downloadCoordsData.value = response.value;
 });
 
-const updateCanvas = (coords, canvas, { red, green, blue }) => {
+const updateCanvas = async (coords, canvas, { red, green, blue }) => {
   const img_data = canvasCtx.value.getImageData(
     0,
     0,
@@ -174,8 +174,7 @@ const validationDone = ref(false);
 const handleMessage = async (event, canvas) => {
   const parsedData = JSON.parse(event.data);
 
-  if (parsedData.contour_id === parsedData.total) {
-    validationDone.value = true;
+  if (parsedData.roi_coords === null) {
     return;
   }
 
@@ -183,7 +182,14 @@ const handleMessage = async (event, canvas) => {
 
   const color = contourColor();
 
-  updateCanvas(parsedData.roi_coords, canvas, color);
+  await updateCanvas(parsedData.roi_coords, canvas, color);
+
+  if (parsedData.contour_id === parsedData.total) {
+    setTimeout(() => {
+      validationDone.value = true;
+    }, 1500);
+    return;
+  }
 };
 
 const downloadDataHandler = () => {
