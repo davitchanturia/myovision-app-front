@@ -8,7 +8,17 @@
     <v-sheet
       class="!px-6 !py-6 relative h-full !flex flex-column gap-4 text-light-on-surface"
     >
-      <baseForm use-for-inference @form-submited="sendRequestHandler">
+      <div v-if="isLoading" class="flex justify-between items-center">
+        <div>Computing objects ...</div>
+        <div>
+          <v-progress-circular
+            :size="50"
+            color="primary"
+            indeterminate
+          ></v-progress-circular>
+        </div>
+      </div>
+      <baseForm v-else use-for-inference @form-submited="sendRequestHandler">
         <template #close>
           <Transition>
             <span v-if="imageMisses" class="mt-2 text-red-500 font-mono text-sm"
@@ -35,6 +45,7 @@ const showDialog = useVModel(props, "modelValue", emit);
 const imageMisses = ref(false);
 
 const inferenceStore = useInferenceStore();
+const isLoading = ref(false);
 
 const sendRequestHandler = async (data) => {
   if (data.image === null && data.image_secondary === null) {
@@ -58,9 +69,14 @@ const sendRequestHandler = async (data) => {
     formData.append("image_secondary", data.image_secondary);
   }
 
-  const response = await inference(formData);
-
-  inferenceStore.setResponse(response);
+  try {
+    isLoading.value = true;
+    const response = await inference(formData);
+    inferenceStore.setResponse(response);
+    isLoading.value = false;
+  } catch (error) {
+    isLoading.value = false;
+  }
 
   navigateTo({ path: "/inference" });
 };
