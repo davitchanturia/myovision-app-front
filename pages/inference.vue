@@ -97,7 +97,6 @@ onMounted(() => {
 
   const img = new Image();
   img.src = path;
-  img.crossOrigin = "Anonymous";
 
   img.onload = () => {
     canvas.width = img.width;
