@@ -149,9 +149,12 @@ const handleMessage = async (event) => {
   noResult.value = false;
 
   myotubeData.value = convertJsonToArray(parsedData?.info_data?.myotube);
-  clusterData.value = parsedData?.info_data?.clusters.map((element) =>
-    convertJsonToArray(element),
-  );
+
+  if (parsedData?.info_data?.clusters !== null) {
+    clusterData.value = parsedData?.info_data?.clusters.map((element) =>
+      convertJsonToArray(element),
+    );
+  }
 };
 
 const updatedLabel = (label) => {

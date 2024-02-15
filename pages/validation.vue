@@ -112,59 +112,6 @@ onMounted(async () => {
     canvas.style.transformOrigin = "top left";
   };
 
-  img.onerror = (error) => {
-    console.error("Error loading image:", error);
-  };
-
-  // fetch(path)
-  //   .then((response) => response.blob())
-  //   .then((blob) => {
-  //     const reader = new FileReader();
-  //     reader.onload = async() => {
-  //       const img = new Image();
-  //       console.log(img);
-  //       img.onload = async () => {
-  //         canvas.width = img.width;
-  //         canvas.height = img.height;
-
-  //         await canvasCtx.value.drawImage(
-  //           img,
-  //           0,
-  //           0,
-  //           canvas.width,
-  //           canvas.height,
-  //         );
-
-  //         canvas.style.transform = `scale(${defaultImgSize / canvas.width}, ${
-  //           defaultImgSize / canvas.height
-  //         })`;
-  //         canvas.style.transformOrigin = "top left";
-  //       };
-  //       img.src = reader.result;
-  //     };
-  //     reader.readAsDataURL(blob);
-  //   });
-
-  // fetch(path, { mode: "cors" })
-  //   .then((response) => response.blob())
-  //   .then((blob) => {
-  //     const img = new Image();
-  //     img.crossOrigin = "anonymous";
-  //     img.src = URL.createObjectURL(blob);
-  //     img.onload = async function () {
-  //       canvas.width = img.width;
-  //       canvas.height = img.height;
-
-  //       await canvasCtx.value.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-  //       canvas.style.transform = `scale(${defaultImgSize / canvas.width}, ${
-  //         defaultImgSize / canvas.height
-  //       })`;
-  //       canvas.style.transformOrigin = "top left";
-  //     };
-  //   })
-  //   .catch((error) => console.error("Fetching and d"));
-
   canvasIsLoading.value = false;
 
   // socket
