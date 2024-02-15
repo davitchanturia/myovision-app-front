@@ -62,11 +62,11 @@ const sendRequestHandler = async (data) => {
   formData.append("config", data.config);
 
   if (data.image !== null) {
-    formData.append("image", data.image);
+    formData.append("myotube", data.image);
   }
 
   if (data.image_secondary !== null) {
-    formData.append("image_secondary", data.image_secondary);
+    formData.append("nuclei", data.image_secondary);
   }
 
   try {
