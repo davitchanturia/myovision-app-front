@@ -9,9 +9,10 @@
         cp .env.example .env
         ```
     - set two necessary environment variables:
-
-        NUXT_PUBLIC_BACKEND_BASE=**backend_url**
-        NUXT_PUBLIC_WEBSOCKET_BASE=**websocket_url**
+        ```
+        NUXT_PUBLIC_BACKEND_BASE=backend_url
+        NUXT_PUBLIC_WEBSOCKET_BASE=websocket_url
+        ```
 
 3. Install depencenies
     ```shell
