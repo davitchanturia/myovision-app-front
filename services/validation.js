@@ -29,7 +29,7 @@ export const getContours = async (hash) => {
 
 export const uploadContours = async (validationData) => {
   const config = useRuntimeConfig();
-  const path = config.public.backendBase + "upload_contours/";
+  const path = config.public.backendBase + "upload_contours/" + hash;
 
   const { data, error } = await useFetch(path, {
     method: "POST",
