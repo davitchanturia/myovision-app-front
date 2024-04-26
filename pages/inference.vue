@@ -12,6 +12,13 @@
     <template #rightSide>
       <div class="flex flex-col justify-between h-full">
         <div>
+          <v-btn
+              variant="text"
+              class="grid grid-cols-2 gap-2 w-full font-mono"
+              @click="downloadDataHandler"
+            >
+              download
+          </v-btn>
           <div v-if="noResult === true" class="font-mono text-sm">
             Myotube not found.
           </div>
@@ -21,7 +28,6 @@
             :myotube-data="myotubeData"
             :clusters-data="clusterData"
           />
-
           <div v-if="noResult === null">
             Click on a Myotube on the image to retrieve data.
           </div>
@@ -50,6 +56,8 @@
 <script setup>
 import { convertJsonToArray } from "../helpers/array";
 import { useInferenceStore } from "~/pinia/useInferenceStore";
+import { getInferenceResults} from "../services/inference.js";
+import { downloadData } from "../services/validation.js";
 
 const config = useRuntimeConfig();
 
@@ -159,4 +167,14 @@ const handleMessage = async (event) => {
 const updatedLabel = (label) => {
   return label.replace("_", " ");
 };
+
+const downloadDataHandler = async () => {
+  const data = await getInferenceResults(
+    inferenceStore.responseValue.value?.image_hash,
+    inferenceStore.responseValue.value?.image_secondary_hash,
+  );
+  console.log(data);
+  downloadData(data);
+};
+
 </script>
